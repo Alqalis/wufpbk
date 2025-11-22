@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADC Membership</title>
+    <link rel="stylesheet" href="css/adc.css">
+</head>
+<body>
+    <section></section>
+    <div class="form_container">
+        <h4>Complate the Account Creation Details</h4> 
+            <div class="form_wrapping">
+                <div class="slide_form">
+                    <form action="adc.php" method="post">
+                        <div class="step"></div>
+                        <div class="form_one">
+                            <div class="form_id">
+                                <label for="matric_no">Matric No e.g NCS/00/11</label>
+                                <input type="hidden" value="251101442" name="account_id">
+                                <input required="required" type="text" class="input-large" name="matric_no"	id="matric_no" value="">
+                                    
+                                <label for="surname">surname</label>
+                                <input required="required" type="text" class="input-large" name="surname" id="surname" value="">
+
+                                <label for="firstname">First Name</label>
+                                <input required="required" type="text" class="input-large" name="firstname" id="firstname"
+                                 value="">
+                            
+                                <label for="m_name">Middle Name</label>
+                                <input type="text" class="input-large" name="m_name" id="m_name" value="">
+                            
+                                <label for="department">Department</label>
+                                <select required name="department_id" id="department_id">
+                                    <option value="" selected>Select Department </option>
+                                    <option value="5">Accountancy</option>
+                                    <option value="10">Agricultural and Bioenvironmental Engineering</option>
+                                    <option value="12">Architectural Technology</option>
+                                    <option value="28">Arts and Social Sciences</option>
+                                    <option value="6">Banking and Finance</option>
+                                    <option value="13">Building Technology</option>
+                                    <option value="1">Business Administration and Management</option>
+                                    <option value="21">Business Education(NCE)</option>
+                                    <option value="11">Civil Engineering</option>
+                                    <option value="31">Computer Engineering</option>
+                                    <option value="22">Computer Science</option>
+                                    <option value="9">Electrical Engineering</option>
+                                    <option value="29">English</option>
+                                    <option value="16">Estate Management</option>
+                                    <option value="20">Industrial Education(NCE)</option>
+                                    <option value="27">Library and Information Science</option>
+                                    <option value="4">Local Government Studies</option>
+                                    <option value="2">Marketing</option>
+                                    <option value="7">Mechanical Engineering</option>
+                                    <option value="32">Mechatronics</option>
+                                    <option value="8">Metallurgical Engineering</option>
+                                    <option value="3">Public Administration</option>
+                                    <option value="15">Quantity Surveying</option>
+                                    <option value="19">Remedial Studies</option>
+                                    <option value="25">Science Education(NCE)</option>
+                                    <option value="24">Science Laboratory Technology</option>
+                                    <option value="26">Social Development</option>
+                                    <option value="23">Statistics</option>
+                                    <option value="17">Surveying and Geo-Informatics</option>
+                                    <option value="30">Taxation</option>
+                                    <option value="14">Urban and Regional Planning</option>
+                                </select>
+                                <div class="child_input_box">
+                                    <div class="child_y_e">
+                                        <label for="yearenter">Year of Entry</label>
+                                        <input required="required" type="text" class="input-large" name="yearenter" id="yearenter"  readonly value="2025/2026">
+                                    </div>
+                                    <div class="child_e_g">
+                                        <label for="yeargraduation">Expected Year of Graduation</label>
+                                        <select required name="yeargraduation" id="yeargraduation">
+                                            <option value="" selected>Select Session </option>
+                                            <!--option value="2023/2024">2023/2024</option>
+                                            <option value="2024/2025">2024/2025</option-->
+                                            <option value="2025/2026">2025/2026</option>
+                                            <option value="2026/2027">2026/2027</option>
+                                            <option value="2027/2028">2027/2028</option>
+                                            <option value="2028/2029">2028/2029</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="btn-order">
+                                    <button type="button" class="next">Next</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form_two">              
+                            <div class="form_id">
+                                <label for="programme_Name">Programme Name</label>
+                                <select required name="programme_id" id="programme_id" >
+                                    <option value="">Select Programme </option>
+                                    <option value="1">Higher National Diploma</option>
+                                    <option value="2">National Diploma</option>
+                                    <option value="4">Nigeria Certificate in Education</option>
+                                    <option value="5">Polytechnic Diploma</option>
+                                </select>
+                                        
+                                <label for="acad_session">Academic Session</label>
+                                <input required="required" type="text" class="input-large" name="acad_session" id="acad_session"
+                                         value="2025/2026">
+                                
+                                <label for="p_number">Phone Number</label>
+                                <input type="text" class="input-large" name="p_number" id="p_number"  value=""
+                                        required>
+                                
+                                <label for="email">Email Address</label>
+                                <input type="email" class="input-large" name="email" id="email"  value=""
+                                        required>
+                                                
+                                <label for="inputEmail" >Enter Password</label>
+                                <input type="password" name="password" id="inputEmail" class="input-large" placeholder="Password"
+                                        required >
+                                                
+                                <label for="inputPassword" >Confirm Password</label>
+                                <div class="input-prepend input-append">
+                                    <input type="password" name="confirm_password" id="confirm_password" class="input-large" placeholder="confirm password" required > 
+                                    <input type="hidden" value="0" name="approval_ecard">
+                                </div>
+                    
+                                <div class="btn-order">
+                                    <button type="button" class="Previous">Previous</button>
+                                    <button type="submit" class="submit" name="create">Create an Account</button>
+                                    <input type="hidden" name="account_sub" value="account_sub">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+    <footer>
+        &copy; Adc
+    </footer>
+</body>
+<script src="js/script.js"></script>
+</html>
