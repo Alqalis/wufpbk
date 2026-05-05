@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Save The Item - Tracker</title>
+    <style type="text/css" media="all">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            width: 100vw;
+            min-height: 100vh;
+            background: #f4f7fc;
+            overflow-x: auto;
+            padding-bottom: 2rem;
+        }
+
+        h4 {
+            color: #fff;
+            text-align: center;
+            padding-block: 1rem;
+            transform: scaleY(1.02);
+            text-transform: capitalize;
+            margin-bottom: max(1rem, 2%);
+            background: linear-gradient(135deg, #0a4b5c, #0b6b7c);
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
+            font-family: 'Segoe UI', 'Georgia', serif;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Form card */
+        form {
+            width: 90%;
+            max-width: 680px;
+            height: auto;
+            margin: 1.5rem auto;
+            padding: 1.8rem 1.5rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.02);
+            border: 1px solid rgba(11,77,88,0.15);
+            transition: all 0.2s;
+        }
+
+        form label {
+            color: rgb(11,77,88);
+            font-weight: 700;
+            text-transform: capitalize;
+            font-size: clamp(0.75rem, 3vw, 0.9rem);
+            display: block;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.3px;
+        }
+
+        form #InputFeild {
+            width: 100%;
+            text-indent: 12px;
+            color: #0a4b5c;
+            font-weight: 500;
+            padding-block: 0.7rem;
+            border-radius: 0.75rem;
+            text-transform: capitalize;
+            margin-bottom: 1.2rem;
+            font-size: clamp(0.75rem, 3vw, 0.95rem);
+            border: 1.5px solid #e2e8f0;
+            background: #ffffff;
+            transition: 0.2s;
+            outline: none;
+        }
+        form #InputFeild:focus {
+            border-color: rgb(11,77,88);
+            box-shadow: 0 0 0 3px rgba(11,77,88,0.2);
+        }
+
+        form #InputSubmit {
+            width: 100%;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 2rem;
+            padding-block: 0.8rem;
+            text-transform: capitalize;
+            background: rgb(11,77,88);
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+            letter-spacing: 0.6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        form #InputSubmit:hover {
+            background: #0e5f6e;
+            transform: scale(0.98);
+        }
+
+        /* Totals bar */
+        .summary-stats {
+            max-width: 95%;
+            margin: 0.5rem auto 1.2rem auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 0.8rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #dce7ed;
+        }
+        .total-card {
+            background: #f0f9fa;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            color: #065a6b;
+        }
+        .total-card span {
+            font-size: 1.3rem;
+            color: #0b4b5c;
+            margin-left: 8px;
+            font-weight: 800;
+        }
+        .reset-btn {
+            background: #eef2f5;
+            border: none;
+            padding: 0.5rem 1.4rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            color: #a13e3e;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.8rem;
+        }
+        .reset-btn:hover {
+            background: #ffe0e0;
+        }
+
+        /* Table container for responsive */
+        .table-wrapper {
+            width: 98%;
+            margin: 1rem auto;
+            overflow-x: auto;
+            border-radius: 1rem;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 0.2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 600px;
+        }
+        table thead tr th {
+            background: #eef2f5;
+            color: #1e5767;
+            font-weight: 700;
+            padding: 12px 8px;
+            border-bottom: 2px solid #cbdde4;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+        table tbody tr td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e9edf2;
+            text-align: center;
+            vertical-align: middle;
+            color: #1f3842;
+            font-weight: 500;
+            background-color: white;
+            white-space: nowrap;
+        }
+        table tbody tr:hover td {
+            background-color: #fefce6;
+        }
+        .delete-btn {
+            background: #fff0f0;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 30px;
+            color: #c05a5a;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: 0.1s;
+        }
+        .delete-btn:hover {
+            background: #f8d7d7;
+            color: #a00;
+            transform: scale(0.96);
+        }
+        .empty-row td {
+            text-align: center;
+            color: #9aaeb6;
+            padding: 2rem;
+            font-style: italic;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #6c8d98;
+            margin-top: 1.5rem;
+        }
+        @media (max-width: 560px) {
+            form { padding: 1.2rem; }
+            .summary-stats { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+    <h4>📦Manage Andu - Save The Record & Tracker</h4>
+    
+    <form id="Form">
+        <label for="titlename">📌 title / item name</label>
+        <input type="text" placeholder="e.g., Grocery, Shopping, Gadget" name="titlename" id="InputFeild" required>
+
+        <label for="itemlist">🔢 quantity (how many you buy)</label>
+        <input type="number" placeholder="e.g., 3" name="itemlist" id="InputFeild" value="1" min="1" step="1" required>
+
+        <label for="itemprice">💰 item price (per unit)</label>
+        <input type="number" placeholder="price per item" name="itemprice" id="InputFeild" step="0.01" min="0" required>
+
+        <label for="DateBuy">📅 date of purchase</label>
+        <input type="date" name="DateBuy" id="InputFeild" required>
+
+        <input type="submit" name="Saving" id="InputSubmit" value="💾 save record now">
+    </form>
+
+    <!-- dynamic summary -->
+    <div class="summary-stats" id="summaryPanel">
+        <div class="total-card">📆 Monthly Total: <span id="monthlyTotal">0.00</span> ₦</div>
+        <div style="display: none;" class="total-card">📊 All Time Total: <span id="grandTotal">0.00</span> ₦</div>
+        <button class="reset-btn" id="clearAllBtn">🗑️ Clear All Records</button>
+    </div>
+
+    <div class="table-wrapper">
+        <table border="0" cellpadding="0" cellspacing="0" id="recordsTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title / Item</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
+                    <th>Total Amount</th>
+                    <th>Purchase Date</th>
+                    <th>Recorded Time</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr class="empty-row">
+                    <td colspan="8">✨ No records yet. Add your first expense! ✨</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer>✅ Auto-saves to localStorage | Each entry keeps accurate timestamp & supports multiple quantities.</footer>
+
+    <script>
+        // ---------- GLOBAL STORAGE KEY ----------
+        const STORAGE_KEY = "expense_tracker_app";
+
+        // ---------- Helper: load records from localStorage ----------
+        function loadRecordsFromStorage() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch(e) { 
+                    return []; 
+                }
+            }
+            return [];
+        }
+
+        // ---------- save current array to localStorage ----------
+        function persistRecords(records) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        }
+
+        // ---------- format currency (NGN style, but generic) ----------
+        function formatMoney(amount) {
+            return amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // ---------- get current full timestamp (date + time) ----------
+        function getCurrentTimestamp() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            return now.toLocaleString(undefined, options);
+        }
+
+        // ---------- compute monthly total based on month/year of purchase date ----------
+        // receives 'YYYY-MM-DD' and totalAmount, returns true if belongs to current month/year
+        function isCurrentMonth(purchaseDateStr) {
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth(); // 0-11
+            
+            const parts = purchaseDateStr.split('-');
+            if (parts.length !== 3) return false;
+            const year = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10) - 1; // js month index
+            return (year === currentYear && month === currentMonth);
+        }
+
+        // update both monthly and grand total from records array
+        function updateTotals(records) {
+            let grand = 0;
+            let monthly = 0;
+            for (let rec of records) {
+                const amount = rec.totalAmount || 0;
+                grand += amount;
+                if (isCurrentMonth(rec.dateBuy)) {
+                    monthly += amount;
+                }
+            }
+            const monthlySpan = document.getElementById("monthlyTotal");
+            const grandSpan = document.getElementById("grandTotal");
+            if (monthlySpan) monthlySpan.innerText = formatMoney(monthly);
+            if (grandSpan) grandSpan.innerText = formatMoney(grand);
+        }
+
+        // ---------- render table from records array ----------
+        function renderTable() {
+            const records = loadRecordsFromStorage();
+            const tbody = document.getElementById("tableBody");
+            if (!tbody) return;
+            
+            if (!records.length) {
+                tbody.innerHTML = `<tr class="empty-row"><td colspan="8">📭 No records yet. Start saving your items! 📭</td></tr>`;
+                updateTotals(records);
+                return;
+            }
+            
+            let html = "";
+            records.forEach((record, idx) => {
+                const serial = idx + 1;
+                const titleName = escapeHtml(record.title) || "—";
+                const quantity = record.quantity;
+                const unitPrice = record.unitPrice;
+                const totalAmountVal = record.totalAmount;
+                const dateBuyRaw = record.dateBuy;
+                const timeRecorded = record.timestamp || "—";
+                
+                html += `
+                    <tr data-idx="${idx}">
+                        <td>${serial}</td>
+                        <td style="font-weight:600;">${escapeHtml(titleName)}</td>
+                        <td>${quantity}</td>
+                        <td>${formatMoney(unitPrice)}</td>
+                        <td style="color:#0b6b7c; font-weight:700;">${formatMoney(totalAmountVal)}</td>
+                        <td>${escapeHtml(dateBuyRaw)}</td>
+                        <td style="font-size:0.75rem;">${escapeHtml(timeRecorded)}</td>
+                        <td><button class="delete-btn" data-index="${idx}">🗑️ Delete</button></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+            
+            // attach delete events after rendering
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = btn.getAttribute('data-index');
+                    if (idx !== null) deleteRecordByIndex(parseInt(idx, 10));
+                });
+            });
+            
+            updateTotals(records);
+        }
+        
+        // Helper to prevent XSS
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
+            });
+        }
+        
+        // delete record by real index from storage
+        function deleteRecordByIndex(index) {
+            let records = loadRecordsFromStorage();
+            if (index >= 0 && index < records.length) {
+                records.splice(index, 1);
+                persistRecords(records);
+                renderTable();  // re-render
+            }
+        }
+        
+        // ---------- clear all records ----------
+        function clearAllRecords() {
+            if (confirm("⚠️ Are you sure you want to delete ALL saved records? This cannot be undone.")) {
+                persistRecords([]);
+                renderTable();
+            }
+        }
+        
+        // ---------- ADD / SAVE new record ----------
+        function addNewRecord(event) {
+            event.preventDefault();
+            
+            // get form elements
+            const titleInput = document.querySelector('input[name="titlename"]');
+            const quantityInput = document.querySelector('input[name="itemlist"]');
+            const priceInput = document.querySelector('input[name="itemprice"]');
+            const dateInput = document.querySelector('input[name="DateBuy"]');
+            
+            let title = titleInput.value.trim();
+            let quantityRaw = quantityInput.value.trim();
+            let priceRaw = priceInput.value.trim();
+            let dateBuy = dateInput.value;
+            
+            // validations
+            if (!title) {
+                alert("❌ Please enter item title / name.");
+                titleInput.focus();
+                return;
+            }
+            if (!quantityRaw || isNaN(parseFloat(quantityRaw)) || parseFloat(quantityRaw) <= 0) {
+                alert("⚠️ Quantity must be a positive number (at least 1).");
+                quantityInput.value = 1;
+                quantityInput.focus();
+                return;
+            }
+            if (!priceRaw || isNaN(parseFloat(priceRaw)) || parseFloat(priceRaw) < 0) {
+                alert("💰 Item price must be a valid number (0 or more).");
+                priceInput.focus();
+                return;
+            }
+            if (!dateBuy) {
+                alert("📅 Please select the purchase date.");
+                dateInput.focus();
+                return;
+            }
+            
+            const quantity = parseFloat(quantityRaw);
+            const unitPrice = parseFloat(priceRaw);
+            const totalAmount = quantity * unitPrice;
+            
+            // Generate current timestamp for record keeping (when saved)
+            const recordedAt = getCurrentTimestamp();
+            
+            // Create record object
+            const newRecord = {
+                id: Date.now() + Math.random() * 10000,
+                title: title,
+                quantity: quantity,
+                unitPrice: unitPrice,
+                totalAmount: totalAmount,
+                dateBuy: dateBuy,        // YYYY-MM-DD format storage
+                timestamp: recordedAt,    // human readable date+time
+                rawDate: new Date().toISOString()
+            };
+            
+            // load existing, push, save, re-render
+            let currentRecords = loadRecordsFromStorage();
+            currentRecords.unshift(newRecord);   // newest on top
+            persistRecords(currentRecords);
+            
+            // reset form but keep date? we can reset values except maybe keep date?
+            titleInput.value = '';
+            quantityInput.value = '1';
+            priceInput.value = '';
+            // set date to empty or keep default? We'll set to empty for fresh entry
+            dateInput.value = '';
+            
+            // focus back to title
+            titleInput.focus();
+            
+            // refresh table view and totals
+            renderTable();
+            
+            // optional: short success message subtle
+            // show feedback, but not intrusive
+            const submitBtn = document.getElementById("InputSubmit");
+            const originalText = submitBtn.value;
+            submitBtn.value = "✓ Saved!";
+            setTimeout(() => {
+                submitBtn.value = originalText;
+            }, 800);
+        }
+        
+        // ---------- Additional: monthly summary calculation + future monthly export? but meets requirement "calculate total amount in the monthly" 
+        // The updateTotals already shows monthly total in the summary bar based on current real month.
+        // Also, we will add a small feature: show monthly totals when changing months automatically. 
+        // The requirement: "calculate total amount in the monthly" — done via summary bar that updates each add/delete.
+        
+        // Initial load & event binding
+        document.addEventListener("DOMContentLoaded", () => {
+            renderTable();
+            
+            const form = document.getElementById("Form");
+            if (form) {
+                form.addEventListener("submit", addNewRecord);
+            }
+            
+            const clearBtn = document.getElementById("clearAllBtn");
+            if (clearBtn) {
+                clearBtn.addEventListener("click", clearAllRecords);
+            }
+            
+            // set default date to today for better UX (optional)
+            const dateField = document.querySelector('input[name="DateBuy"]');
+            if (dateField && !dateField.value) {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                dateField.value = `${yyyy}-${mm}-${dd}`;
+            }
+        });
+        
+        // for any dynamic future updates we keep re-render integrity
+        window.addEventListener("storage", (e) => {
+            if (e.key === STORAGE_KEY) {
+                renderTable();
+            }
+        });
+        
+        // functionality for calculating monthly total is connected.
+    </script>
+</body>
+</html>
